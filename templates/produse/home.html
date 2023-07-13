@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% block title %} Home {% endblock %}
+{% block content %}
+    <h2>Introduceti produsele aici</h2>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>PRODUS</th>
+            <th>STATUS</th>
+            <th>DELETE</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for product in products %}
+            {% if product.bought %}
+            <tr class="table-danger">
+                <td class = "line-through">{{ product.product }}</td>
+                <td><a class="text-danger" href="{% url 'change_status' product.id %}">Give Up</a></td>
+                <td><a href="{% url 'delete' product.id %}">Delete</a></td>
+            </tr>
+            {% else %}
+            <tr class="table-success">
+                <td>{{ product.product }}</td>
+                <td><a  class="text-success" href="{% url 'change_status' product.id %}">Buy</a></td>
+                <td><a href="{% url 'delete' product.id %}">Delete</a></td>
+            </tr>
+            {% endif %}
+        {% endfor %}
+        </tbody>
+    </table>
+    <form method="POST">
+        {% csrf_token %}
+        {{ form.as_p}}
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+{% endblock %}
